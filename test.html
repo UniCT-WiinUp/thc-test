@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolatore THC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #444;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #eaf8ea;
+            border: 1px solid #d4edda;
+            border-radius: 4px;
+        }
+        .legend {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f0f8ff;
+            border: 1px solid #d1e7fd;
+            border-radius: 4px;
+        }
+        .legend h2 {
+            color: #0073e6;
+            margin-bottom: 10px;
+        }
+        .legend p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        .legend ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .legend ul li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calcolatore di THC</h1>
+        <form id="thc-form">
+            <!-- Form Inputs -->
+            <label for="quantita">Quantità di cannabis (in grammi):</label>
+            <input type="number" id="quantita" step="0.01" placeholder="Es: 0.5" required>
+
+            <label for="percentuale">Percentuale di THC (%):</label>
+            <input type="number" id="percentuale" step="0.1" placeholder="Es: 18" required>
+
+            <label for="modalita">Modalità di consumo:</label>
+            <select id="modalita" required>
+                <option value="fumo">Fumo</option>
+                <option value="vaporizzazione">Vaporizzazione</option>
+                <option value="edibili">Edibili</option>
+            </select>
+			
+			<label for="alimentazione">Hai mangiato prima di consumare cannabis?</label>
+			<select id="alimentazione">
+				<option value="grassi">Sì, un pasto ricco di grassi</option>
+				<option value="leggero">Sì, ma leggero</option>
+				<option value="vuoto">No, a stomaco vuoto</option>
+			</select>
+
+			<label for="alcool">Hai bevuto alcolici?</label>
+			<select id="alcool">
+				<option value="no">No</option>
+				<option value="si">Sì</option>
+			</select>
+
+			<label for="idratazione">Sei idratato?</label>
+			<select id="idratazione">
+				<option value="idratato">Sì</option>
+				<option value="disidratato">No</option>
+			</select>
+			
+            <label for="peso">Peso corporeo (kg):</label>
+            <input type="number" id="peso" step="1" placeholder="Es: 70" required>
+
+            <label for="tolleranza">Livello di tolleranza:</label>
+            <select id="tolleranza" required>
+                <option value="bassa">Bassa</option>
+                <option value="media">Media</option>
+                <option value="alta">Alta</option>
+            </select>
+			
+			<label for="testType">Tipo di test:</label>
+            <select id="testType" required>
+                <option value="sotoxa">Sotoxa (25 ng/mL)</option>
+                <option value="drugwipe">Drugwipe (10 ng/mL)</option>
+            </select>
+
+            <button type="button" onclick="calcolaTHC()">Calcola</button>
+        </form>
+
+        <div id="result" class="result" style="display: none;"></div>
+
+        <!-- Legenda -->
+<div class="legend">
+    <h2>Legenda</h2>
+    <p>Questa guida ti aiuta a capire come compilare il calcolatore.</p>
+
+    <h3>1. Percentuale di THC (%)</h3>
+    <p>
+        La percentuale di THC si riferisce alla concentrazione di tetraidrocannabinolo nella cannabis che stai usando.
+        <ul>
+            <li><strong>Bassa potenza:</strong> 5-10% (cannabis di qualità più bassa).</li>
+            <li><strong>Media potenza:</strong> 10-15% (cannabis standard).</li>
+            <li><strong>Alta potenza:</strong> 15-25% (cannabis pregiata).</li>
+            <li><strong>Concentrati:</strong> 50-90% (oli o hashish).</li>
+        </ul>
+    </p>
+
+    <h3>2. Livello di tolleranza</h3>
+    <p>
+        La tolleranza rappresenta la tua capacità di "sopportare" gli effetti del THC.
+        <ul>
+            <li><strong>Bassa tolleranza:</strong> Consumo raro o occasionale.</li>
+            <li><strong>Media tolleranza:</strong> Consumo regolare (1-3 volte a settimana).</li>
+            <li><strong>Alta tolleranza:</strong> Consumo quotidiano o cronico.</li>
+        </ul>
+    </p>
+
+    <h3>3. Modalità di consumo</h3>
+    <p>
+        La modalità di consumo influenza l'assorbimento del THC:
+        <ul>
+            <li><strong>Fumo:</strong> Efficienza del 40% circa.</li>
+            <li><strong>Vaporizzazione:</strong> Efficienza del 65% circa.</li>
+            <li><strong>Edibili:</strong> Efficienza del 15%, ma con effetti più duraturi.</li>
+        </ul>
+    </p>
+
+    <h3>4. Hai mangiato prima di consumare cannabis?</h3>
+    <p>
+        La modalità di assunzione del THC può essere influenzata dalla presenza di cibo nel tuo stomaco. Se hai mangiato prima di consumare cannabis, l'effetto percepito può variare.
+        <ul>
+            <li><strong>Sì, un pasto ricco di grassi:</strong> I pasti ricchi di grassi (es. burro, oli) possono aumentare l'assorbimento del THC, soprattutto se consumato tramite edibili.</li>
+            <li><strong>Sì, ma leggero:</strong> Un pasto leggero può non avere un grande impatto sull'assorbimento.</li>
+            <li><strong>No, a stomaco vuoto:</strong> Consumare cannabis a stomaco vuoto può portare a un effetto più forte e rapido.</li>
+        </ul>
+    </p>
+
+    <h3>5. Hai bevuto alcolici?</h3>
+    <p>
+        L'alcol può intensificare gli effetti del THC, aumentando la velocità di assorbimento.
+        <ul>
+            <li><strong>Sì:</strong> L'alcol può aumentare gli effetti percepiti del THC, portando a una sensazione di maggiore intossicazione.</li>
+            <li><strong>No:</strong> L'effetto sarà più moderato senza l'alcol che influisce sull'assorbimento.</li>
+        </ul>
+    </p>
+
+    <h3>6. Sei idratato?</h3>
+    <p>
+        Essere idratati è importante per evitare effetti collaterali spiacevoli come la secchezza delle fauci e la confusione mentale.
+        <ul>
+            <li><strong>Sì:</strong> Essere ben idratati non ha un grande impatto, ma riduce gli effetti collaterali come la secchezza delle fauci.</li>
+            <li><strong>No:</strong> La disidratazione può intensificare alcuni effetti collaterali, come la sensazione di bocca asciutta e confusione.</li>
+        </ul>
+    </p>
+	 <h3>7. Tipo di test salivare</h3>
+    <p>
+        A seconda del tipo di test salivare scelto, la soglia per risultare positivo varia:
+        <ul>
+            <li><strong>Sotoxa:</strong> Soglia di 25 ng/mL.</li>
+            <li><strong>Drugwipe:</strong> Soglia di 10 ng/mL.</li>
+        </ul>
+    </p>
+</div>
+
+    </div>
+
+<script>
+    function calcolaTHC() {
+
+        const alimentazione = document.getElementById('alimentazione').value;
+        const alcool = document.getElementById('alcool').value;
+        const idratazione = document.getElementById('idratazione').value;
+        const quantita = parseFloat(document.getElementById('quantita').value);
+        const percentuale = parseFloat(document.getElementById('percentuale').value) / 100;
+        const modalita = document.getElementById('modalita').value;
+        const peso = parseFloat(document.getElementById('peso').value);
+        const tolleranza = document.getElementById('tolleranza').value;
+        const testType = document.getElementById('testType').value;
+
+        // Coefficiente di efficienza del consumo
+        const efficienzaConsumo = { 
+            "fumo": 0.4, 
+            "vaporizzazione": 0.65, 
+            "edibili": 0.15 
+        };
+
+        // Modificatori per tolleranza e altre variabili
+        const modificatoreTolleranza = { 
+            "bassa": 1.2, 
+            "media": 1.0, 
+            "alta": 0.8 
+        };
+
+        // Modificatori per alimentazione, alcool e idratazione
+        let modificatoreAlimentazione = 1.0;
+        if (alimentazione === "grassi") {
+            modificatoreAlimentazione = 1.1;
+        } else if (alimentazione === "vuoto") {
+            modificatoreAlimentazione = 1.15;
+        }
+
+        const modificatoreAlcool = alcool === "si" ? 1.2 : 1.0;
+        const modificatoreIdratazione = idratazione === "disidratato" ? 1.05 : 1.0;
+
+        // Calcoli di THC assorbito
+        const thcTotale = quantita * percentuale;
+        const thcAssorbito = thcTotale * efficienzaConsumo[modalita];
+
+        const thcEffettivo = thcAssorbito * modificatoreTolleranza[tolleranza] 
+                            * modificatoreAlimentazione 
+                            * modificatoreAlcool 
+                            * modificatoreIdratazione;
+
+        // Calcolo dell'effetto percepito
+        const effettoPercepito = (thcEffettivo / peso) * 100;
+        const effettoPercepitoValoreAssoluto = thcEffettivo * 1000; // Conversione in mg
+
+        // Aggiustamento del coefficiente di distribuzione
+        const coefficienteDistribuzioneSaliva = 0.003; // 0.5% del THC assorbito finisce nella saliva
+        const thcConcentrazioneSaliva = (thcEffettivo * 1000000) * coefficienteDistribuzioneSaliva; // Conversione a ng/mL
+
+        // Soglie del test
+        const soglieTest = {
+            "sotoxa": 25, // 25 ng/mL per Sotoxa
+            "drugwipe": 10 // 10 ng/mL per Drugwipe
+        };
+
+        const superaSoglia = thcConcentrazioneSaliva > soglieTest[testType];
+
+        if (isNaN(thcEffettivo) || isNaN(effettoPercepito) || thcEffettivo <= 0 || effettoPercepito <= 0 || thcTotale <= 0) {
+            alert("Per favore, verifica i dati inseriti. Assicurati che tutti i campi siano corretti.");
+            return;
+        }
+
+        // Visualizzazione dei risultati
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = `
+            <p><strong>THC assorbito:</strong> ${thcEffettivo.toFixed(3)} g</p>
+            <p><strong>Effetto percepito (in percentuale):</strong> ${effettoPercepito.toFixed(2)}%</p>
+            <p><strong>Effetto percepito (in valore assoluto - mg):</strong> ${effettoPercepitoValoreAssoluto.toFixed(2)} mg</p>
+            <p><strong>Concentrazione stimata di THC nella saliva:</strong> ${thcConcentrazioneSaliva.toFixed(2)} ng/mL</p>
+            <p><strong>Hai superato la soglia del test salivare?</strong> ${superaSoglia ? "Sì" : "No"} (Soglia per ${testType === 'sotoxa' ? 'Sotoxa (25 ng/mL)' : 'Drugwipe (10 ng/mL)'})</p>
+        `;
+        resultDiv.style.display = "block";
+    }
+</script>
+
+</body>
+</html>
